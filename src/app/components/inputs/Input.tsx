@@ -46,6 +46,26 @@ const Input = ({id, label, type = 'text', disabled, formatPrice, required, regis
           ${errors[id] ? 'focus:border-rose-500' : 'focus:border-black'}
         `}
       />
+      <label
+        className={`
+          absolute
+          text-md
+          duration-150
+          transform
+          top-5
+          z-10
+          origin-[0]
+          -translate-y-3
+          ${formatPrice ? 'left-9' : 'left-4'}
+          peer-placholder-shown:scale-100
+          peer-placeholder-shown:translate-y-0
+          peer-focus:scale-75
+          peer-focus:-translate-y-4
+          ${errors[id] ? 'text-rose-500' : 'text-zinc-400'}
+        `}
+      >
+        {label}
+      </label>
     </div>
   )
 }

@@ -168,6 +168,7 @@ const Modal = ({isOpen, actionLabel, onClose, onSubmit, body, disabled, footer, 
                     onClick={handleSubmit}
                   />
                 </div>
+                {footer}
               </footer>
             </div>
           </div>
