@@ -3,7 +3,7 @@
 import { IconType } from "react-icons"
 
 interface CategoryInputProps {
-  onClick: () => void
+  onClick: (value: string) => void
   selected?: boolean
   label: string
   icon: IconType
@@ -13,7 +13,7 @@ interface CategoryInputProps {
 const CategoryInput = ({onClick, selected, label, icon: Icon}: CategoryInputProps) => {
   return (
     <div
-      onClick={onClick}
+      onClick={() => onClick(label)}
       className={`
         rounded-xl
         border-2
