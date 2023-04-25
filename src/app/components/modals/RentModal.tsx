@@ -55,6 +55,7 @@ const RentModal = () => {
   const guestCount = watch('guestCount')
   const roomCount = watch('roomCount')
   const bathroomCount = watch('bathroomCount')
+  const imageSrc = watch('imageSrc')
 
   const Map = useMemo(() => dynamic(() => import('../Map'), {
     ssr: false
@@ -100,10 +101,10 @@ const RentModal = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto'>
         {categories.map((item) => (
           <div key={item.label} className='col-span-1'>
-            <CategoryInput 
-              onClick={() => setCustomValue('category', item.label)}
-              selected={category === item.label}
+            <CategoryInput
               label={item.label}
+              onClick={(label) => setCustomValue('category', label)}
+              selected={category === item.label}
               icon={item.icon}
             />
           </div>
@@ -119,9 +120,9 @@ const RentModal = () => {
           title='Where is your place located?'
           subtitle='Help guests find you!'
         />
-        <CountrySelect 
+        <CountrySelect
           value={location}
-          onChange={(location) => setCustomValue('location', location)}
+          onChange={(locationValue) => setCustomValue('location', locationValue)}
         />
         <Map 
           center={location?.latlng}
@@ -137,25 +138,25 @@ const RentModal = () => {
           title='Share some basics about your place'
           subtitle='What amenities do you have?'
         />
-        <Counter 
+        <Counter
           title='Guests'
           subtitle='How many guests do you allow?'
           value={guestCount}
-          onChange={(guestCount) => setCustomValue('guestCount', guestCount)}
+          onChange={(value) => setCustomValue('guestCount', value)}
         />
         <hr />
         <Counter 
           title='Rooms'
           subtitle='How many rooms do you have?'
           value={roomCount}
-          onChange={(roomCount) => setCustomValue('roomCount', roomCount)}
+          onChange={(value) => setCustomValue('roomCount', value)}
         />
         <hr />
         <Counter 
           title='Bathrooms'
           subtitle='How many bathrooms do you have?'
           value={bathroomCount}
-          onChange={(bathroomCount) => setCustomValue('bathroomCount', bathroomCount)}
+          onChange={(value) => setCustomValue('bathroomCount', value)}
         />
       </div>
     )
@@ -168,7 +169,10 @@ const RentModal = () => {
           title='Add a photo of your place'
           subtitle='Show guests what your place looks like'
         />
-        <ImageUpload />
+        <ImageUpload 
+          value={imageSrc}
+          onChange={(value) => setCustomValue('imageSrc', value)}
+        />
       </div>
     )
   }
