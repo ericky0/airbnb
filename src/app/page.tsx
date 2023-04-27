@@ -1,6 +1,5 @@
 import { Listing } from "@prisma/client";
 import getListings from "./actions/getListings";
-import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
 import ListingCard from "./components/Listings/ListingCard";
@@ -11,9 +10,16 @@ export default async function Home() {
   const listings = await getListings()
   const currentUser = await getCurrentUser()
 
+  if (listings.length === 0) {
+    return (
+      <EmptyState title="No exact matches" subtitle="Try changing or moving some of your filters" showReset/>
+    )
+  }
+
   return (
      <Container>
-        <div className="pt-24 
+        <div className="
+          pt-24 
           grid 
           grid-cols-1 
           sm:grid-cols-2
