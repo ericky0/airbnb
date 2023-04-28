@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import prisma from '@/app/libs/prismadb'
 import getCurrentUser from '@/app/actions/getCurrentUser'
-import { title } from 'process'
 
 export async function POST(
   request: NextRequest
