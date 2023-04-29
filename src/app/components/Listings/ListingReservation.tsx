@@ -8,13 +8,13 @@ interface ListingReservationProps {
   price: number
   dateRange: Range
   totalPrice: number
-  onChangeDate: (value: Range) => void
+  onChangeDateRange: (value: Range) => void
   onSubmit: () => void
   disabled?: boolean
   disabledDates: Date[]
 }
 
-const ListingReservation = ({price, dateRange, totalPrice, onChangeDate, onSubmit, disabled, disabledDates}: ListingReservationProps) => {
+const ListingReservation = ({price, dateRange, totalPrice, onChangeDateRange, onSubmit, disabled, disabledDates}: ListingReservationProps) => {
   return (
     <div className='bg-white rounded-xl border-[1px] border-neutral-500 overflow-hidden'>
       <div className='flex flex-row items-center gap-1 p-4'>
@@ -29,7 +29,7 @@ const ListingReservation = ({price, dateRange, totalPrice, onChangeDate, onSubmi
       <Calendar 
         value={dateRange}
         disabledDates={disabledDates}
-        onChange={(value) => onChangeDate(value.selection)}
+        onChange={(value) => onChangeDateRange(value.selection)}
       />
       <hr />
       <div className='p-4 flex flew-row items-center justify-between font-semibold text-lg'> 

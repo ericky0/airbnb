@@ -6,8 +6,7 @@ import ListingInfo from "@/app/components/Listings/ListingInfo";
 import ListingReservation from "@/app/components/Listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories"
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeListing, SafeUser } from "@/app/types"
-import { Reservation } from "@prisma/client"
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types"
 import axios from "axios";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -27,7 +26,7 @@ interface ListingClientProps {
     user: SafeUser
   }
   currentUser?: SafeUser | null
-  reservations?: Reservation[]
+  reservations?: SafeReservation[]
 }
 
 const ListingClient = ({listing, currentUser, reservations = []}: ListingClientProps) => {
@@ -49,10 +48,29 @@ const ListingClient = ({listing, currentUser, reservations = []}: ListingClientP
 
     return dates
   }, [reservations])
-  
   const [isLoading, setIsLoading] = useState(false)
   const [totalPrice, setTotalPrice] = useState(listing.price)
   const [dateRange, setDateRange] = useState<Range>(initialDateRange)
+
+  // difference between start date / end date * listing.price = total.price
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
+      const dayCount = differenceInCalendarDays(
+        dateRange.endDate,
+        dateRange.startDate
+      )
+
+      if (dayCount && listing.price) {
+        setTotalPrice(dayCount * listing.price)
+      } else {
+        setTotalPrice(listing.price)
+      }
+    }
+  }, [dateRange, listing.price])
+
+  const category = useMemo(() => {
+    return categories.find((item) => item.label === listing.category)
+  }, [listing.category])
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
@@ -80,25 +98,6 @@ const ListingClient = ({listing, currentUser, reservations = []}: ListingClientP
       setIsLoading(false)
     })
   }, [totalPrice, dateRange, listing?.id, currentUser, loginModal, router])
-
-  useEffect(() => {
-    if (dateRange.startDate && dateRange.endDate) {
-      const dayCount = differenceInCalendarDays(
-        dateRange.endDate,
-        dateRange.startDate
-      )
-
-      if (dayCount && listing.price) {
-        setTotalPrice(dayCount * listing.price)
-      } else {
-        setTotalPrice(listing.price)
-      }
-    }
-  }, [dateRange, listing.price])
-
-  const category = useMemo(() => {
-    return categories.find((item) => item.label === listing.category)
-  }, [listing.category])
 
   return (
     <Container>
@@ -131,7 +130,7 @@ const ListingClient = ({listing, currentUser, reservations = []}: ListingClientP
             <ListingReservation 
               price={listing.price}
               totalPrice={totalPrice}
-              onChangeDate={(value) => setDateRange(value)}
+              onChangeDateRange={(value) => setDateRange(value)}
               dateRange={dateRange}
               onSubmit={onCreateReservation}
               disabled={isLoading}
