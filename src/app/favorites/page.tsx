@@ -9,10 +9,12 @@ const ListingPage = async () => {
   const favorites = await getFavoriteListings()
 
   if ( favorites.length === 0 ) {
-    <EmptyState 
+    return (
+      <EmptyState 
       title="No favorites found"
       subtitle="Looks like you have no favorites listings"
     />
+    )
   }
 
   return (
