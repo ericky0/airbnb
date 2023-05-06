@@ -8,9 +8,6 @@ const ReservationsPage = async () => {
   const currentUser = await getCurrentUser()
   const reservations = await getReservations({authorId: currentUser?.id})
 
-  console.log(reservations)
-
-
   if (!currentUser) {
     return (
       <EmptyState 
